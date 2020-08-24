@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core'; // curley braces used because we need 
 import youtube from "./api/youtube";
 import SearchBar from "./components/SearchBar";
 import VideoDetail from "./components/VideoDetail";
-// import VideoList from "./components/VideoList";
+import VideoList from "./components/VideoList";
 
 
 class App extends React.Component {
@@ -15,12 +15,20 @@ class App extends React.Component {
         selectedVideos: null,
     }
 
+    componentDidMount() {
+        this.handleSubmit('Chocolates');
+    }
+
+    onVideoSelect = (video) => {
+        this.setState({ selectedVideo: video });
+    }
+
     handleSubmit = async(searchTerm) => {
         const response = await youtube.get('search', {
             params: {
                 part: 'snippet', // fetches videos
                 maxResults: 5, // fetches only 5 videos
-                key: 'AIzaSyBeqEYKQMDMhfPeCmpIL7Fvkcl3rfmcyVY',
+                key: '[API KEY]', // copy the API key and paste it here
                 q: searchTerm,
             }
         });
@@ -44,8 +52,10 @@ class App extends React.Component {
             Grid item xs = { 8 } > < VideoDetail video = { this.state.selectedVideo }
             /> < /
             Grid > <
-            Grid item xs = { 4 } > { /* Search Bar */ } <
-            /Grid> < /
+            Grid item xs = { 4 } > < VideoList videos = { videos }
+            onVideoSelect = { this.onVideoSelect }
+            /> < /
+            Grid > < /
             Grid > <
             /Grid> < /
             Grid >
